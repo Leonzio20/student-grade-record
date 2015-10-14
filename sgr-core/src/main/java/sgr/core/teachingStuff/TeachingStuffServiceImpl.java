@@ -25,4 +25,23 @@ public class TeachingStuffServiceImpl extends DaoSupport implements TeachingStuf
       return getEntity(TeachingStuff.class, id);
    }
 
+   @Override
+   public void create(TeachingStuff teachingStuff)
+   {
+      createEntity(teachingStuff);
+   }
+
+   @Override
+   public void remove(Long id)
+   {
+      TeachingStuff teacher = get(id);
+      removeEntity(teacher);
+   }
+
+   @Override
+   public void update(TeachingStuff teachingStuff)
+   {
+      updateEntity(teachingStuff);
+   }
+
 }
