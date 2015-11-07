@@ -1,7 +1,6 @@
 package sgr.admin.frontend.teachingStuff;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.component.inputtext.InputText;
@@ -14,22 +13,20 @@ import sgr.app.api.teachingStuff.TeachingStuff;
 import sgr.app.api.teachingStuff.TeachingStuffService;
 import sgr.commons.core.RandomPasswordGenerator;
 import sgr.commons.frontend.AbstractPanel;
+import sgr.commons.frontend.EditablePanel;
 
 /**
  * @author dawbes
  */
 @Controller
 @ManagedBean(name = "teachingStuffPanel")
-@ViewScoped
-public class TeachingStuffPanel extends AbstractPanel<TeachingStuff>
+public class TeachingStuffPanel extends AbstractPanel<TeachingStuff> implements
+      EditablePanel<TeachingStuff>
 {
 
    private static final long serialVersionUID = 2553933126154263063L;
 
-   // private TeachingStuff teachingStuff = new TeachingStuff();
-   private Account account = new Account();
-
-   // private List<TeachingStuff> teachingStuffs;
+   private Account account;
 
    @Autowired
    private TeachingStuffService teachingStuffService;
@@ -43,6 +40,7 @@ public class TeachingStuffPanel extends AbstractPanel<TeachingStuff>
    public void init()
    {
       entity = new TeachingStuff();
+      account = new Account();
    }
 
    @Override
@@ -51,7 +49,8 @@ public class TeachingStuffPanel extends AbstractPanel<TeachingStuff>
       entities = teachingStuffService.search();
    }
 
-   public void addTeacher()
+   @Override
+   public void create()
    {
       entity.setAccount(account);
       teachingStuffService.create(entity);
@@ -60,17 +59,19 @@ public class TeachingStuffPanel extends AbstractPanel<TeachingStuff>
       account = new Account();
    }
 
-   public void deleteTeacher(Long id)
+   @Override
+   public void update(TeachingStuff object)
+   {
+      teachingStuffService.update(object);
+      entities = teachingStuffService.search();
+      entity = new TeachingStuff();
+   }
+
+   @Override
+   public void remove(Long id)
    {
       teachingStuffService.remove(id);
       entities = teachingStuffService.search();
-   }
-
-   public void updateTeacher(TeachingStuff teachingStuff)
-   {
-      teachingStuffService.update(teachingStuff);
-      entities = teachingStuffService.search();
-      teachingStuff = new TeachingStuff();
    }
 
    public void generatePassword(String component)
