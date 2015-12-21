@@ -1,4 +1,4 @@
-package sgr.admin.frontend.teachingStuff;
+package sgr.admin.frontend.student;
 
 import java.util.List;
 
@@ -10,25 +10,25 @@ import sgr.app.api.account.Account;
 import sgr.app.api.classgroup.ClassGroup;
 import sgr.app.api.classgroup.ClassGroupQuery;
 import sgr.app.api.classgroup.ClassGroupService;
-import sgr.app.api.teachingStuff.TeachingStuff;
-import sgr.app.api.teachingStuff.TeachingStuffService;
+import sgr.app.api.person.Person;
+import sgr.app.api.student.Student;
+import sgr.app.api.student.StudentService;
 import sgr.commons.core.RandomPasswordGenerator;
 import sgr.commons.frontend.AbstractPanel;
 import sgr.commons.frontend.Bean;
 import sgr.commons.frontend.EditablePanel;
 
 /**
- * @author dawbes
+ * @author leonzio
  */
 @Controller
-public class TeachingStuffPanel extends AbstractPanel<TeachingStuff> implements
-      EditablePanel<TeachingStuff>
+public class StudentPanel extends AbstractPanel<Student> implements EditablePanel<Student>
 {
 
    private static final long serialVersionUID = 2553933126154263063L;
 
    @Autowired
-   private TeachingStuffService teachingStuffService;
+   private StudentService studentService;
 
    @Autowired
    private ClassGroupService classGroupService;
@@ -37,15 +37,18 @@ public class TeachingStuffPanel extends AbstractPanel<TeachingStuff> implements
 
    private Account account;
 
+   private Person person;
+
    private List<ClassGroup> availableClasses;
 
    @Override
    public void init()
    {
-      entity = new TeachingStuff();
+      entity = new Student();
       account = new Account();
-      entities = teachingStuffService.search();
-      availableClasses = classGroupService.search(ClassGroupQuery.setAvailableForTeacher(true));
+      person = new Person();
+      entities = studentService.search();
+      availableClasses = classGroupService.search(ClassGroupQuery.EMPTY);
    }
 
    @Override
@@ -58,21 +61,22 @@ public class TeachingStuffPanel extends AbstractPanel<TeachingStuff> implements
    public void create()
    {
       entity.setAccount(account);
-      teachingStuffService.create(entity);
+      entity.setPerson(person);
+      studentService.create(entity);
       init();
    }
 
    @Override
-   public void update(TeachingStuff object)
+   public void update(Student object)
    {
-      teachingStuffService.update(object);
+      studentService.update(object);
       init();
    }
 
    @Override
    public void remove(Long id)
    {
-      teachingStuffService.remove(id);
+      studentService.remove(id);
       init();
    }
 
@@ -91,6 +95,16 @@ public class TeachingStuffPanel extends AbstractPanel<TeachingStuff> implements
    public void setAccount(Account account)
    {
       this.account = account;
+   }
+
+   public Person getPerson()
+   {
+      return person;
+   }
+
+   public void setPerson(Person person)
+   {
+      this.person = person;
    }
 
    public List<ClassGroup> getAvailableClasses()
