@@ -1,4 +1,4 @@
-package sgr.app.api.student;
+package sgr.app.api.admin;
 
 import java.io.Serializable;
 
@@ -10,29 +10,24 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import sgr.app.api.account.Account;
-import sgr.app.api.classgroup.ClassGroup;
 import sgr.app.api.person.Person;
-import sgr.app.api.person.PersonName;
 
 /**
- * @author leonzio
+ * @author dawbes89
  */
 @Entity
-@Table(name = "student")
-public class Student implements PersonName, Serializable
+@Table(name = "admin")
+public class Admin implements Serializable
 {
 
-   private static final long serialVersionUID = -2795415011971757723L;
-
-   public static String PROPERTY_CLASS_GROUP = "classGroup";
+   private static final long serialVersionUID = -3977084256453665930L;
 
    @Id
-   @Column(name = "student_id")
+   @Column(name = "admin_id")
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
 
@@ -43,11 +38,6 @@ public class Student implements PersonName, Serializable
    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
    @JoinColumn(name = "account_id", nullable = false, unique = true)
    private Account account;
-
-   @ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST,
-         CascadeType.REFRESH }, fetch = FetchType.EAGER)
-   @JoinColumn(name = "class_group_id", nullable = false)
-   private ClassGroup classGroup;
 
    public Long getId()
    {
@@ -77,26 +67,6 @@ public class Student implements PersonName, Serializable
    public void setAccount(Account account)
    {
       this.account = account;
-   }
-
-   public ClassGroup getClassGroup()
-   {
-      return classGroup;
-   }
-
-   public void setClassGroup(ClassGroup classGroup)
-   {
-      this.classGroup = classGroup;
-   }
-
-   @Override
-   public String getFullName()
-   {
-      if (person == null)
-      {
-         return null;
-      }
-      return String.format("%s %s", person.getFirstName(), person.getLastName());
    }
 
 }
