@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.type.StandardBasicTypes;
 
@@ -36,7 +37,8 @@ class PresenceServiceImpl extends DaoSupport implements PresenceService
    @Override
    public List<Presence> search(PresenceQuery query)
    {
-      Criteria criteria = createCriteria(query);
+      final Criteria criteria = createCriteria(query);
+      criteria.addOrder(Order.desc("id"));
       return search(criteria);
    }
 
@@ -65,18 +67,18 @@ class PresenceServiceImpl extends DaoSupport implements PresenceService
       }
       if (query.hasStudentFullName())
       {
-         Criteria personCriteria = criteria.createCriteria(PROPERTY_PERSON);
-         MatchMode matchMode = MatchMode.ANYWHERE;
-         String matchString = matchMode.toMatchString(query.getStudentFullName());
-         String format = String.format("concat(first_name, ' ', last_name) %s ?", "like");
-         personCriteria.add(Restrictions.sqlRestriction(format, matchString,
-               StandardBasicTypes.STRING));
+         final Criteria personCriteria = criteria.createCriteria(PROPERTY_PERSON);
+         final MatchMode matchMode = MatchMode.ANYWHERE;
+         final String matchString = matchMode.toMatchString(query.getStudentFullName());
+         final String rawQuery = "concat(first_name, ' ', last_name) ilike ?";
+         personCriteria
+               .add(Restrictions.sqlRestriction(rawQuery, matchString, StandardBasicTypes.STRING));
       }
       if (query.hasDate())
       {
          criteria.add(Restrictions.eq("l.date", query.getDate()));
       }
-      if(query.hasStatus())
+      if (query.hasStatus())
       {
          criteria.add(Restrictions.eq(Presence.PROPERTY_STATUS, query.getStatus()));
       }

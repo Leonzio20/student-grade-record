@@ -10,7 +10,7 @@
 		<p:submenu label="#{sgr_app_translation.menu_vertical_class_title}"
 			rendered="#{mainPanel.showMenuFor('TEACHER')}">
 			<p:menuitem
-				value="#{sgr_app_translation.menu_vertical_personal_lessons}"
+				value="#{sgr_app_translation.menu_vertical_class_lessons}"
 				outcome="teacherLessonPanel" icon="ui-icon-calendar" />
 			<p:menuitem
 				value="#{sgr_app_translation.menu_vertical_class_assessment}"
@@ -18,9 +18,15 @@
 			<p:menuitem
 				value="#{sgr_app_translation.menu_vertical_class_comments}"
 				outcome="teacherCommentPanel" icon="ui-icon-comment" />
+		</p:submenu>
+
+		<!-- PRECEPTOR MENU -->
+		<p:submenu
+			label="#{sgr_app_translation.menu_vertical_preceptor_title}"
+			rendered="#{mainPanel.currentUserIsPreceptor()}">
 			<p:menuitem
-				value="#{sgr_app_translation.menu_vertical_personal_presence}"
-				outcome="preceptorPresencePanel" icon="ui-icon-comment" rendered="#{mainPanel.showPresenceForPreceptor()}"/>
+				value="#{sgr_app_translation.menu_vertical_preceptor_presence}"
+				outcome="preceptorPresencePanel" icon="ui-icon-calendar" />
 		</p:submenu>
 
 		<!-- STUDENT SUBMENU -->
@@ -35,6 +41,9 @@
 			<p:menuitem
 				value="#{sgr_app_translation.menu_vertical_personal_comments}"
 				outcome="studentCommentPanel" icon="ui-icon-comment" />
+			<p:menuitem
+				value="#{sgr_app_translation.menu_vertical_personal_notifications}"
+				outcome="studentNotificationPanel" icon="ui-icon-mail-closed" />
 		</p:submenu>
 
 		<!-- COMMON SUBMENU -->
@@ -46,9 +55,6 @@
 			<p:menuitem
 				value="#{sgr_app_translation.menu_vertical_management_siteSettings}"
 				outcome="siteSettings" icon="ui-icon-wrench" />
-			<p:menuitem
-				value="#{sgr_app_translation.menu_vertical_management_mailBox}"
-				outcome="index" icon="ui-icon-mail-closed" />
 		</p:submenu>
 	</p:menu>
 

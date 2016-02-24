@@ -7,32 +7,36 @@
 
 	<ui:define name="content">
 		<!-- SEARCH PANEL -->
-		<p:panel header="#{sgr_translation.form_search}" toggleable="true">
-			<h:form id="search">
-				<p:remoteCommand name="onload"
-					action="#{teacherAssessmentPanel.onLoad}" autoRun="true"
-					update=":root:table search:teacherSchoolSubject" />
+		<h:form id="search">
+			<p:remoteCommand name="onload"
+				action="#{teacherAssessmentPanel.onLoad}" autoRun="true"
+				update=":root:table :search:panel" />
 
-				<p:outputLabel value="#{sgr_translation.form_class}: " />
-				<p:selectOneMenu id="classGroup"
-					value="#{teacherAssessmentPanel.classGroup}" effect="fade"
-					filter="true" filterMatchMode="contains" converter="classConverter">
-					<p:ajax listener="#{teacherAssessmentPanel.handleClassChange}"
-						update=":root:table" />
-					<f:selectItem itemValue="#{null}"
-						itemLabel="#{sgr_translation.selectOneMenu_select}"
-						noSelectionOption="true" />
-					<f:selectItems value="#{teacherAssessmentPanel.classes}"
-						var="classGroup" itemLabel="#{classGroup.className}"
-						itemValue="#{classGroup}" />
-				</p:selectOneMenu>
-				<p:outputLabel value="#{sgr_translation.schoolSubject}: " />
-				<p:outputLabel id="teacherSchoolSubject"
-					value="#{teacherAssessmentPanel.currentLoggedTeacher.schoolSubject}"
-					converter="schoolSubjectTranslationConverter" style="color: blue" />
+			<p:panel id="panel" header="#{sgr_translation.form_search}"
+				toggleable="true">
+				<p:panelGrid columns="4">
+					<p:outputLabel value="#{sgr_translation.schoolSubject}: " />
+					<p:outputLabel id="teacherSchoolSubject"
+						value="#{teacherAssessmentPanel.currentLoggedTeacher.schoolSubject}"
+						converter="schoolSubjectTranslationConverter" style="color: blue" />
 
-			</h:form>
-		</p:panel>
+					<p:outputLabel value="#{sgr_translation.form_class}: " />
+					<p:selectOneMenu id="classGroup"
+						value="#{teacherAssessmentPanel.classGroup}" effect="fade"
+						filter="true" filterMatchMode="contains"
+						converter="classConverter">
+						<p:ajax listener="#{teacherAssessmentPanel.handleClassChange}"
+							update=":root:table" />
+						<f:selectItem itemValue="#{null}"
+							itemLabel="#{sgr_translation.selectOneMenu_select}"
+							noSelectionOption="true" />
+						<f:selectItems value="#{teacherAssessmentPanel.classes}"
+							var="classGroup" itemLabel="#{classGroup.className}"
+							itemValue="#{classGroup}" />
+					</p:selectOneMenu>
+				</p:panelGrid>
+			</p:panel>
+		</h:form>
 
 		<!-- MAIN TABLE -->
 		<h:form id="root">
@@ -76,7 +80,7 @@
 						header="#{sgr_translation.form_assessment_new}">
 						<p:panelGrid columns="2" columnClasses="label, value">
 							<p:outputLabel for="student"
-								value="#{sgr_translation.form_comment_studentName}" />
+								value="#{sgr_translation.form_studentName}" />
 							<p:outputLabel id="student"
 								value="#{teacherAssessmentPanel.entity.fullName}" />
 
