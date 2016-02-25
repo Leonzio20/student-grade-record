@@ -10,8 +10,12 @@ import org.hibernate.criterion.Restrictions;
 import sgr.app.api.notification.Notification;
 import sgr.app.api.notification.NotificationQuery;
 import sgr.app.api.notification.NotificationService;
+import sgr.app.api.student.Student;
 import sgr.app.core.DaoSupport;
 
+/**
+ * @author leonzio
+ */
 class NotificationServiceImpl extends DaoSupport implements NotificationService
 {
 
@@ -19,14 +23,15 @@ class NotificationServiceImpl extends DaoSupport implements NotificationService
    public List<Notification> search(NotificationQuery query)
    {
       Criteria criteria = createCriteria(query);
-      criteria.addOrder(Order.desc("received"));
+      criteria.addOrder(Order.desc(Notification.PROPERTY_RECEIVED));
       return search(criteria);
    }
 
    private Criteria createCriteria(NotificationQuery query)
    {
       Criteria criteria = createCriteria(Notification.class);
-      criteria.add(Restrictions.eq("studentId", query.getStudentId()));
+      criteria.add(Restrictions.eq(nest(Notification.PROPERTY_STUDENT, Student.PROPERTY_ID),
+            query.getStudentId()));
       return criteria;
    }
 

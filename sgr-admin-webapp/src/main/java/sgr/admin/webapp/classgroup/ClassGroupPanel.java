@@ -12,10 +12,12 @@ import sgr.app.frontend.panels.AbstractPanel;
 import sgr.app.frontend.panels.EditablePanel;
 
 /**
+ * Panel for handling classes.
+ *
  * @author leonzio
  */
 @Controller
-public class ClassGroupPanel extends AbstractPanel<ClassGroup> implements EditablePanel<ClassGroup>
+public class ClassGroupPanel extends AbstractPanel<ClassGroup>implements EditablePanel<ClassGroup>
 {
 
    private static final long serialVersionUID = 1665393811406612606L;
@@ -40,7 +42,8 @@ public class ClassGroupPanel extends AbstractPanel<ClassGroup> implements Editab
    public void create()
    {
       classGroupService.create(entity);
-      init();
+      entity = new ClassGroup();
+      onLoad();
    }
 
    @Override
@@ -53,11 +56,12 @@ public class ClassGroupPanel extends AbstractPanel<ClassGroup> implements Editab
    public void remove(Long id)
    {
       classGroupService.remove(id);
-      init();
+      onLoad();
    }
 
    public List<String> getYears()
    {
       return classGroupService.getYears();
    }
+
 }

@@ -73,7 +73,6 @@ public class TeacherLessonPanel extends AbstractPanel<Lesson>
    {
       currentLoggedTeacher = authenticationService.getCurrentUser();
       classGroup = currentLoggedTeacher.getPreceptorClass();
-
       searchLessons();
    }
 
