@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -20,7 +21,9 @@ import sgr.app.api.classgroup.ClassGroup;
 import sgr.app.api.teachingStuff.SchoolSubject;
 
 /**
- * @author dawbes
+ * Entity for lessons.
+ *
+ * @author dawbes89
  */
 @Entity
 @Table(name = "lesson")
@@ -30,13 +33,13 @@ public class Lesson implements Serializable
    private static final long serialVersionUID = -5117496622690659878L;
 
    public static final String PROPERTY_ID = "id";
-   public static final String PROPERTY_STUDENT_ID = "studentId";
+   public static final String PROPERTY_STUDENT = "student";
    public static final String PROPERTY_SCHOOL_SUBJECT = "schoolSubject";
    public static final String PROPERTY_CLASS_GROUP = "classGroup";
    public static final String PROPERTY_DATE = "date";
 
    @Id
-   @Column(name = "lesson_id")
+   @Column(name = "id")
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
 
@@ -49,8 +52,10 @@ public class Lesson implements Serializable
    @Column(name = "lesson_subject")
    private String lessonSubject;
 
-   @ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH }, fetch = FetchType.EAGER)
-   @JoinColumn(name = "class_group_id", nullable = false)
+   @ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH },
+         fetch = FetchType.EAGER)
+   @JoinColumn(name = "class_group_id", nullable = false, referencedColumnName = "id",
+         foreignKey = @ForeignKey(name = "lesson_class_group_id_fk") )
    private ClassGroup classGroup;
 
    @Enumerated(EnumType.STRING)

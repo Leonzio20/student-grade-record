@@ -9,9 +9,9 @@ import sgr.app.frontend.panels.AbstractPanel;
 import sgr.app.frontend.panels.EditablePanel;
 
 /**
+ * Panel for handling annoucements.
  *
- * @author dawbes
- *
+ * @author dawbes89
  */
 @Controller
 public class AnnouncementPanel extends AbstractPanel<Announcement>
@@ -40,21 +40,22 @@ public class AnnouncementPanel extends AbstractPanel<Announcement>
    public void create()
    {
       announcementService.create(entity);
-      init();
+      entity = new Announcement();
+      onLoad();
    }
 
    @Override
    public void update(Announcement object)
    {
       announcementService.update(entity);
-      init();
+      onLoad();
    }
 
    @Override
    public void remove(Long id)
    {
       announcementService.delete(id);
-      init();
+      onLoad();
    }
 
 }
