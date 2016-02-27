@@ -1,10 +1,8 @@
 package sgr.app.webapp.teachingStuff;
 
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,7 +20,6 @@ import sgr.app.api.student.Student;
 import sgr.app.api.student.StudentQuery;
 import sgr.app.api.student.StudentService;
 import sgr.app.api.teachingStuff.TeachingStuff;
-import sgr.app.frontend.StandardFormat;
 import sgr.app.frontend.panels.AbstractPanel;
 
 /**
@@ -56,27 +53,34 @@ public class TeacherLessonPanel extends AbstractPanel<Lesson>
 
    private List<ClassGroup> classes;
 
-   private List<Student> selectedStudent = new ArrayList<>();
+   private List<Student> selectedStudents;
 
    @Override
    public void init()
    {
+      selectedStudents = new ArrayList<>();
       entity = new Lesson();
       entities = new ArrayList<>();
       students = new ArrayList<>();
       student = new Student();
-      classes = classGroupService.search(ClassGroupQuery.EMPTY);
    }
 
    @Override
    public void onLoad()
    {
+      entity = new Lesson();
+      classes = classGroupService.search(ClassGroupQuery.EMPTY);
       currentLoggedTeacher = authenticationService.getCurrentUser();
       classGroup = currentLoggedTeacher.getPreceptorClass();
       searchLessons();
    }
 
    public void searchLessons()
+   {
+      entities = lessonService.search(createQuery());
+   }
+
+   private LessonQuery createQuery()
    {
       final LessonQuery query = new LessonQuery();
       if (classGroup != null && classGroup.getId() != null)
@@ -87,7 +91,7 @@ public class TeacherLessonPanel extends AbstractPanel<Lesson>
       {
          query.setSchoolSubject(currentLoggedTeacher.getSchoolSubject());
       }
-      entities = lessonService.search(query);
+      return query;
    }
 
    public void searchStudents()
@@ -100,22 +104,25 @@ public class TeacherLessonPanel extends AbstractPanel<Lesson>
       students = studentService.search(query);
    }
 
-   public void create() throws ParseException
+   public void create()
    {
-      final List<Presence> presences = createPressences();
-      final DateFormat dateFormat = StandardFormat.DAY_FORMAT;
-      final LessonQuery query = LessonQuery.all().withClassGroupId(classGroup.getId())
-            .withSchoolSubject(currentLoggedTeacher.getSchoolSubject()).build();
-      final List<Lesson> lessonsForClass = lessonService.search(query);
-
-      entity.setLessonNumber(lessonsForClass.size() + 1);
+      searchLessons();
+      entity.setLessonNumber(entities.size() + 1);
       entity.setClassGroup(classGroup);
-      entity.setDate(dateFormat.parse(dateFormat.format(new Date())));
       entity.setSchoolSubject(currentLoggedTeacher.getSchoolSubject());
       entity.setIssuerName(currentLoggedTeacher.getFullName());
-      entity = lessonService.create(entity, presences);
-      searchStudents();
-      searchLessons();
+      entity = lessonService.create(entity, createPressences());
+      onLoad();
+      selectedStudents = new ArrayList<>();
+   }
+
+   private List<Presence> createPressences()
+   {
+      final List<Presence> presences = students.stream()
+            .map(student -> Presence.createAbsent(student)).collect(Collectors.toList());
+      presences.stream().filter(presence -> selectedStudents.contains(presence.getStudent()))
+            .forEach(presence -> presence.setStatus(PresenceStatus.PRESENT));
+      return presences;
    }
 
    public List<Student> getStudents()
@@ -168,42 +175,14 @@ public class TeacherLessonPanel extends AbstractPanel<Lesson>
       this.currentLoggedTeacher = currentLoggedTeacher;
    }
 
-   public List<Student> getSelectedStudent()
+   public List<Student> getSelectedStudents()
    {
-      return selectedStudent;
+      return selectedStudents;
    }
 
-   public void setSelectedStudent(List<Student> selectedStudent)
+   public void setSelectedStudents(List<Student> selectedStudents)
    {
-      this.selectedStudent = selectedStudent;
-   }
-
-   private List<Presence> createPressences()
-   {
-      List<Presence> presences = new ArrayList<>();
-      for (Student student : students)
-      {
-         presences.add(createPresence(student));
-      }
-      for (Student student : selectedStudent)
-      {
-         for (Presence presence : presences)
-         {
-            if (presence.getStudent().getId().equals(student.getId()))
-            {
-               presence.setStatus(PresenceStatus.PRESENT);
-            }
-         }
-      }
-      return presences;
-   }
-
-   private static Presence createPresence(Student student)
-   {
-      Presence presence = new Presence();
-      presence.setStudent(student);
-      presence.setStatus(PresenceStatus.ABSENT);
-      return presence;
+      this.selectedStudents = selectedStudents;
    }
 
 }
