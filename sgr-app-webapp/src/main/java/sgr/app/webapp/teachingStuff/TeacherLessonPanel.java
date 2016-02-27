@@ -68,6 +68,7 @@ public class TeacherLessonPanel extends AbstractPanel<Lesson>
    @Override
    public void onLoad()
    {
+      classes = classGroupService.search(ClassGroupQuery.EMPTY);
       entity = new Lesson();
       classes = classGroupService.search(ClassGroupQuery.EMPTY);
       currentLoggedTeacher = authenticationService.getCurrentUser();
@@ -107,7 +108,7 @@ public class TeacherLessonPanel extends AbstractPanel<Lesson>
    public void create()
    {
       searchLessons();
-      entity.setLessonNumber(entities.size() + 1);
+      entity.setSubjectNumber(entities.size() + 1);
       entity.setClassGroup(classGroup);
       entity.setSchoolSubject(currentLoggedTeacher.getSchoolSubject());
       entity.setIssuerName(currentLoggedTeacher.getFullName());
