@@ -6,10 +6,11 @@ import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 
 import sgr.app.api.DateHelper;
-import sgr.app.frontend.StandardFormat;
+import sgr.app.frontend.helpers.StandardFormat;
 
 /**
  * @author dawbes89
+ * @author leonzio
  */
 public class DateValidator extends AbstractValidator<Date>
 {
