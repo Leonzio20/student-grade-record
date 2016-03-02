@@ -6,7 +6,7 @@
 	xmlns:p="http://primefaces.org/ui" template="template.xhtml">
 
 	<ui:define name="content">
-		<ui:include src="removeConfirmDialog.xhtml">
+		<ui:include src="common/removeConfirmDialog.xhtml">
 			<ui:param name="panel" value="#{teachingStaffPanel}" />
 		</ui:include>
 
@@ -16,7 +16,7 @@
 				autoRun="true" update=":root:table" />
 
 			<p:outputPanel id="panel" style="text-align:center;" layout="block">
-				<p:commandButton value="#{sgr_translation.button_add}"
+				<p:commandButton value="#{sgr_translation.common_add}"
 					title="#{sgr_translation.button_add_teacher}" icon="ui-icon-plus"
 					oncomplete="PF('addDialog').show()" />
 				<p:separator />
@@ -48,7 +48,7 @@
 						<p:outputLabel value="#{teachingStaff.person.lastName}" />
 					</p:column>
 					<p:column
-						headerText="#{sgr_translation.form_teachingStaff_schoolSubject}"
+						headerText="#{sgr_translation.schoolSubject}"
 						filterBy="#{teachingStaff.schoolSubject}"
 						filterMatchMode="contains">
 						<p:outputLabel value="#{teachingStaff.schoolSubject}"
@@ -59,7 +59,7 @@
 						<p:outputLabel value="#{teachingStaff.preceptorClass.className}" />
 					</p:column>
 					<p:column width="80">
-						<p:commandButton title="#{sgr_translation.button_update}"
+						<p:commandButton title="#{sgr_translation.common_update}"
 							update=":update:panel" oncomplete="PF('updateDialog').show()"
 							icon="ui-icon-pencil">
 							<f:setPropertyActionListener value="#{teachingStaff}"
@@ -78,7 +78,7 @@
 
 		<!-- ADD FORM -->
 		<p:dialog widgetVar="addDialog"
-			header="#{sgr_translation.form_window_caption_add}" resizable="false"
+			header="#{sgr_translation.common_add}" resizable="false"
 			showEffect="fold" hideEffect="fold" width="600px" height="500px"
 			closable="false" draggable="false" modal="true" appendTo="@(body)"
 			focus=":add:firstName">
@@ -89,7 +89,7 @@
 					<p:panel id="personal" header="#{sgr_translation.form_person}">
 						<p:panelGrid columns="2" columnClasses="label, value">
 							<p:outputLabel for="firstName"
-								value="#{sgr_translation.form_person_firstName}:" />
+								value="#{sgr_translation.form_person_firstName}" />
 							<p:inputText id="firstName"
 								label="#{sgr_translation.form_person_firstName}"
 								value="#{teachingStaffPanel.entity.person.firstName}"
@@ -98,7 +98,7 @@
 							</p:inputText>
 
 							<p:outputLabel for="lastName"
-								value="#{sgr_translation.form_person_lastName}:" />
+								value="#{sgr_translation.form_person_lastName}" />
 							<p:inputText id="lastName"
 								label="#{sgr_translation.form_person_lastName}"
 								value="#{teachingStaffPanel.entity.person.lastName}"
@@ -107,7 +107,7 @@
 							</p:inputText>
 
 							<p:outputLabel for="birthDate"
-								value="#{sgr_translation.form_person_birthDate}:" />
+								value="#{sgr_translation.form_person_birthDate}" />
 							<p:calendar id="birthDate" navigator="true"
 								label="#{sgr_translation.form_person_birthDate}"
 								value="#{teachingStaffPanel.entity.person.birthDate}"
@@ -119,7 +119,7 @@
 					<p:panel id="account" header="#{sgr_translation.form_account}">
 						<p:panelGrid columns="2" columnClasses="label, value">
 							<p:outputLabel for="validTo"
-								value="#{sgr_translation.form_account_validTo}:" />
+								value="#{sgr_translation.form_account_validTo}" />
 							<p:calendar id="validTo"
 								label="#{sgr_translation.form_account_validTo}"
 								value="#{teachingStaffPanel.entity.account.validTo}"
@@ -129,7 +129,7 @@
 							</p:calendar>
 
 							<p:outputLabel for="userName"
-								value="#{sgr_translation.form_account_userName}:" />
+								value="#{sgr_translation.form_account_userName}" />
 							<p:inputText id="userName"
 								label="#{sgr_translation.form_account_userName}"
 								value="#{teachingStaffPanel.entity.account.userName}"
@@ -139,7 +139,7 @@
 							</p:inputText>
 
 							<p:outputLabel for="password"
-								value="#{sgr_translation.form_account_password}:" />
+								value="#{sgr_translation.form_account_password}" />
 							<p:inputText id="password"
 								label="#{sgr_translation.form_account_password}"
 								value="#{teachingStaffPanel.entity.account.password}"
@@ -158,14 +158,14 @@
 
 					<p:panel id="other" header="#{sgr_translation.form_other}">
 						<p:panelGrid columns="2" columnClasses="label, value">
-							<ui:include src="schoolSubjectField.xhtml">
+							<ui:include src="common/schoolSubjectField.xhtml">
 								<ui:param name="schoolSubject"
 									value="#{teachingStaffPanel.entity.schoolSubject}" />
 								<ui:param name="required" value="true" />
 							</ui:include>
 
 							<p:outputLabel for="academicTitle"
-								value="#{sgr_translation.form_teachingStaff_academicTitle}:" />
+								value="#{sgr_translation.form_teachingStaff_academicTitle}" />
 							<p:inputText id="academicTitle"
 								value="#{teachingStaffPanel.entity.academicTitle}"
 								label="#{sgr_translation.form_teachingStaff_academicTitle}"
@@ -174,7 +174,7 @@
 							</p:inputText>
 
 							<p:outputLabel for="preceptorClass"
-								value="#{sgr_translation.form_teachingStaff_preceptor}:" />
+								value="#{sgr_translation.form_teachingStaff_preceptor}" />
 							<p:selectOneMenu id="preceptorClass"
 								value="#{teachingStaffPanel.entity.preceptorClass}"
 								effect="fade" filter="true" filterMatchMode="startsWith"
@@ -211,7 +211,7 @@
 
 		<!-- UPDATE FORM -->
 		<p:dialog widgetVar="updateDialog"
-			header="#{sgr_translation.form_window_caption_update}"
+			header="#{sgr_translation.common_update}"
 			resizable="false" showEffect="fold" hideEffect="fold" width="600px"
 			height="500px" closable="false" draggable="false" modal="true"
 			appendTo="@(body)" dynamic="true">
@@ -222,7 +222,7 @@
 					<p:panel id="personal" header="#{sgr_translation.form_person}">
 						<p:panelGrid columns="2" columnClasses="label, value">
 							<p:outputLabel for="firstName"
-								value="#{sgr_translation.form_person_firstName}:" />
+								value="#{sgr_translation.form_person_firstName}" />
 							<p:inputText id="firstName"
 								label="#{sgr_translation.form_person_firstName}"
 								value="#{teachingStaffPanel.entity.person.firstName}"
@@ -231,7 +231,7 @@
 							</p:inputText>
 
 							<p:outputLabel for="lastName"
-								value="#{sgr_translation.form_person_lastName}:" />
+								value="#{sgr_translation.form_person_lastName}" />
 							<p:inputText id="lastName"
 								label="#{sgr_translation.form_person_lastName}"
 								value="#{teachingStaffPanel.entity.person.lastName}"
@@ -240,7 +240,7 @@
 							</p:inputText>
 
 							<p:outputLabel for="birthDate"
-								value="#{sgr_translation.form_person_birthDate}:" />
+								value="#{sgr_translation.form_person_birthDate}" />
 							<p:calendar id="birthDate" navigator="true"
 								label="#{sgr_translation.form_person_birthDate}"
 								value="#{teachingStaffPanel.entity.person.birthDate}"
@@ -253,7 +253,7 @@
 					<p:panel id="account" header="#{sgr_translation.form_account}">
 						<p:panelGrid columns="2" columnClasses="label, value">
 							<p:outputLabel for="validTo"
-								value="#{sgr_translation.form_account_validTo}:" />
+								value="#{sgr_translation.form_account_validTo}" />
 							<p:calendar id="validTo"
 								label="#{sgr_translation.form_account_validTo}"
 								value="#{teachingStaffPanel.entity.account.validTo}"
@@ -266,14 +266,14 @@
 
 					<p:panel id="other" header="#{sgr_translation.form_other}">
 						<p:panelGrid columns="2" columnClasses="label, value">
-							<ui:include src="schoolSubjectField.xhtml">
+							<ui:include src="common/schoolSubjectField.xhtml">
 								<ui:param name="schoolSubject"
 									value="#{teachingStaffPanel.entity.schoolSubject}" />
 								<ui:param name="required" value="true" />
 							</ui:include>
 
 							<p:outputLabel for="academicTitle"
-								value="#{sgr_translation.form_teachingStaff_academicTitle}:" />
+								value="#{sgr_translation.form_teachingStaff_academicTitle}" />
 							<p:inputText id="academicTitle"
 								value="#{teachingStaffPanel.entity.academicTitle}"
 								label="#{sgr_translation.form_teachingStaff_academicTitle}"
@@ -282,7 +282,7 @@
 							</p:inputText>
 
 							<p:outputLabel for="preceptorClass"
-								value="#{sgr_translation.form_teachingStaff_preceptor}:" />
+								value="#{sgr_translation.form_teachingStaff_preceptor}" />
 							<p:selectOneMenu id="preceptorClass"
 								value="#{teachingStaffPanel.entity.preceptorClass}"
 								effect="fade" filter="true" filterMatchMode="startsWith"
@@ -297,7 +297,7 @@
 						</p:panelGrid>
 					</p:panel>
 					<p:panel id="buttons">
-						<p:commandButton value="#{sgr_translation.button_update}"
+						<p:commandButton value="#{sgr_translation.common_update}"
 							actionListener="#{teachingStaffPanel.update(teachingStaffPanel.entity)}"
 							update=":update:panel :root:panel" icon="ui-icon-disk"
 							oncomplete="if (args &amp;&amp; !args.validationFailed) PF('updateDialog').hide()">
@@ -323,62 +323,31 @@
 				appendTo="@(body)" dynamic="true">
 				<p:panelGrid id="panel" columns="1">
 
-					<p:fieldset id="personal" legend="#{sgr_translation.form_person}">
-						<p:panelGrid columns="2" columnClasses="label, value">
-							<p:outputLabel for="firstName"
-								value="#{sgr_translation.form_person_firstName}:" />
-							<p:outputLabel id="firstName"
-								value="#{teachingStaffPanel.entity.person.firstName}" />
+					<ui:include src="detailsPanel/personDisplayDetailsFieldset.xhtml">
+						<ui:param name="person"
+							value="#{teachingStaffPanel.entity.person}" />
+					</ui:include>
 
-							<p:outputLabel for="lastName"
-								value="#{sgr_translation.form_person_lastName}:" />
-							<p:outputLabel id="lastName"
-								value="#{teachingStaffPanel.entity.person.lastName}" />
-
-							<p:outputLabel for="age"
-								value="#{sgr_translation.form_person_age}:" />
-							<p:outputLabel id="age"
-								value="#{teachingStaffPanel.entity.person.age}" />
-
-							<p:outputLabel for="birthDate"
-								value="#{sgr_translation.form_person_birthDate}:" />
-							<p:outputLabel id="birthDate"
-								value="#{teachingStaffPanel.entity.person.birthDate}"
-								converter="yearConverter" />
-						</p:panelGrid>
-					</p:fieldset>
-
-					<p:fieldset id="account" legend="#{sgr_translation.form_account}">
-						<p:panelGrid columns="2" columnClasses="label, value">
-							<p:outputLabel for="userName"
-								value="#{sgr_translation.form_account_userName}:" />
-							<p:outputLabel id="userName"
-								value="#{teachingStaffPanel.entity.account.userName}" />
-
-							<p:outputLabel for="valitTo"
-								value="#{sgr_translation.form_account_validTo}:" />
-							<p:outputLabel id="valitTo"
-								value="#{teachingStaffPanel.entity.account.validTo}">
-								<f:convertDateTime pattern="yyyy-MM-dd" />
-							</p:outputLabel>
-						</p:panelGrid>
-					</p:fieldset>
+					<ui:include src="detailsPanel/accountDisplayDetailsFieldset.xhtml">
+						<ui:param name="account"
+							value="#{teachingStaffPanel.entity.account}" />
+					</ui:include>
 
 					<p:fieldset id="other" legend="#{sgr_translation.form_other}">
 						<p:panelGrid columns="2" columnClasses="label, value">
 							<p:outputLabel for="shoolSubject"
-								value="#{sgr_translation.form_teachingStaff_schoolSubject}:" />
+								value="#{sgr_translation.schoolSubject}" />
 							<p:outputLabel id="shoolSubject"
 								value="#{teachingStaffPanel.entity.schoolSubject}"
 								converter="schoolSubjectTranslationConverter" />
 
 							<p:outputLabel for="academicTitle"
-								value="#{sgr_translation.form_teachingStaff_academicTitle}:" />
+								value="#{sgr_translation.form_teachingStaff_academicTitle}" />
 							<p:outputLabel id="academicTitle"
 								value="#{teachingStaffPanel.entity.academicTitle}" />
 
 							<p:outputLabel for="class"
-								value="#{sgr_translation.form_teachingStaff_preceptor}:" />
+								value="#{sgr_translation.form_teachingStaff_preceptor}" />
 							<p:outputLabel id="class"
 								value="#{teachingStaffPanel.entity.preceptorClass.className}" />
 						</p:panelGrid>
