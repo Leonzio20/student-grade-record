@@ -1,13 +1,8 @@
 package sgr.app.api.classgroup;
 
+import javax.persistence.*;
 import java.io.Serializable;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import java.util.Objects;
 
 /**
  * @author leonzio
@@ -16,82 +11,79 @@ import javax.persistence.Table;
 @Table(name = "class_group")
 public class ClassGroup implements Serializable
 {
+	public static final String PROPERTY_ID = "id";
+	public static final String PROPERTY_GROUP_NUMBER = "groupNumber";
+	public static final String PROPERTY_GROUP_NAME = "groupName";
+	public static final String PROPERTY_YEARBOOK = "yearbook";
 
-   private static final long serialVersionUID = -1359236624174757353L;
+	@Id
+	@Column(name = "id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-   public static final String PROPERTY_ID = "id";
-   public static final String PROPERTY_GROUP_NUMBER = "groupNumber";
-   public static final String PROPERTY_GROUP_NAME = "groupName";
-   public static final String PROPERTY_YEARBOOK = "yearbook";
+	@Column(name = "group_number", precision = 1)
+	private Integer groupNumber;
 
-   @Id
-   @Column(name = "id")
-   @GeneratedValue(strategy = GenerationType.IDENTITY)
-   private Long id;
+	@Column(name = "group_name", length = 1, nullable = false, updatable = false)
+	private String groupName;
 
-   @Column(name = "group_number", precision = 1, nullable = true, updatable = true)
-   private Integer groupNumber;
+	@Column(name = "yearbook", nullable = false, updatable = false, length = 9)
+	private String yearbook;
 
-   @Column(name = "group_name", length = 1, nullable = false, updatable = false)
-   private String groupName;
+	public Long getId()
+	{
+		return id;
+	}
 
-   @Column(name = "yearbook", nullable = false, updatable = false, length = 9)
-   private String yearbook;
+	public void setId(Long id)
+	{
+		this.id = id;
+	}
 
-   public Long getId()
-   {
-      return id;
-   }
+	public Integer getGroupNumber()
+	{
+		return groupNumber;
+	}
 
-   public void setId(Long id)
-   {
-      this.id = id;
-   }
+	public void setGroupNumber(Integer groupNumber)
+	{
+		this.groupNumber = groupNumber;
+	}
 
-   public Integer getGroupNumber()
-   {
-      return groupNumber;
-   }
+	public String getGroupName()
+	{
+		return groupName;
+	}
 
-   public void setGroupNumber(Integer groupNumber)
-   {
-      this.groupNumber = groupNumber;
-   }
+	public void setGroupName(String groupName)
+	{
+		this.groupName = groupName;
+	}
 
-   public String getGroupName()
-   {
-      return groupName;
-   }
+	public String getYearbook()
+	{
+		return yearbook;
+	}
 
-   public void setGroupName(String groupName)
-   {
-      this.groupName = groupName;
-   }
+	public void setYearbook(String yearbook)
+	{
+		this.yearbook = yearbook;
+	}
 
-   public String getYearbook()
-   {
-      return yearbook;
-   }
+	public String getClassName()
+	{
+		return String.format("%d%s", groupNumber, groupName);
+	}
 
-   public void setYearbook(String yearbook)
-   {
-      this.yearbook = yearbook;
-   }
-
-   public String getClassName()
-   {
-      return String.format("%d%s", groupNumber, groupName);
-   }
-
-   @Override
-   public boolean equals(Object obj)
-   {
-      if (obj == null)
-      {
-         return false;
-      }
-      final ClassGroup object = (ClassGroup) obj;
-      return object.id.equals(this.id);
-   }
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (obj == null || !Objects.equals(this.getClass(), obj.getClass()))
+		{
+			return false;
+		}
+		final ClassGroup object = (ClassGroup) obj;
+		return Objects.equals(object.getId(), id);
+	}
 
 }

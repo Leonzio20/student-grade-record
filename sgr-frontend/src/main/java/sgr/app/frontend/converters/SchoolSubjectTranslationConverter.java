@@ -1,8 +1,8 @@
 package sgr.app.frontend.converters;
 
-import javax.faces.component.UIComponent;
-
 import sgr.app.api.teachingstaff.SchoolSubject;
+
+import javax.faces.component.UIComponent;
 
 
 /**
@@ -12,18 +12,21 @@ import sgr.app.api.teachingstaff.SchoolSubject;
  */
 public class SchoolSubjectTranslationConverter extends AbstractTranslationConverter<SchoolSubject>
 {
+	@Override
+	protected Class<SchoolSubject> getConvertedValueClass()
+	{
+		return SchoolSubject.class;
+	}
 
-   @Override
-   protected SchoolSubject convertToObject(String value)
-   {
-      return SchoolSubject.valueOf(value);
-   }
+	@Override
+	protected SchoolSubject convertToObject(String value)
+	{
+		return SchoolSubject.valueOf(value);
+	}
 
-   @Override
-   protected String convertToString(Object object, UIComponent component)
-   {
-      final SchoolSubject schoolSubject = (SchoolSubject) object;
-      final String translate = translationService.translate(schoolSubject.getLabel());
-      return translate;
-   }
+	@Override
+	protected String convertToString(SchoolSubject object, UIComponent component)
+	{
+		return translationService.translate(object.getLabel());
+	}
 }

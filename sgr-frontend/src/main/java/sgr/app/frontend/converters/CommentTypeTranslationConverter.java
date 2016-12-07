@@ -1,8 +1,8 @@
 package sgr.app.frontend.converters;
 
-import javax.faces.component.UIComponent;
-
 import sgr.app.api.comment.CommentType;
+
+import javax.faces.component.UIComponent;
 
 /**
  * Converts {@link CommentType} enum to translated value.
@@ -11,19 +11,22 @@ import sgr.app.api.comment.CommentType;
  */
 public class CommentTypeTranslationConverter extends AbstractTranslationConverter<CommentType>
 {
+	@Override
+	protected Class<CommentType> getConvertedValueClass()
+	{
+		return CommentType.class;
+	}
 
-   @Override
-   protected CommentType convertToObject(String value)
-   {
-      return CommentType.valueOf(value);
-   }
+	@Override
+	protected CommentType convertToObject(String value)
+	{
+		return CommentType.valueOf(value);
+	}
 
-   @Override
-   protected String convertToString(Object object, UIComponent component)
-   {
-      final CommentType commentType = (CommentType) object;
-      final String translate = translationService.translate(commentType.getLabel());
-      return translate;
-   }
+	@Override
+	protected String convertToString(CommentType object, UIComponent component)
+	{
+		return translationService.translate(object.getLabel());
+	}
 
 }
